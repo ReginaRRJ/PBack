@@ -1,6 +1,6 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const app = require('../index'); // Ajusta la ruta si es necesario
+const app = require('index.js'); // Ajusta la ruta si es necesario
 
 // Crea un token válido para pruebas (debe coincidir con tu clave secreta en .env o usar 'secreto_temporal')
 const token = jwt.sign({ id: 1, correo_electronico: 'test@example.com' }, process.env.JWT_SECRET || 'secreto_temporal');
