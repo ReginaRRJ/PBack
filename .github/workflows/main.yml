@@ -1,0 +1,36 @@
+name: Deploy to Azure with ZipDeploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Lint
+        run: |
+          npx eslint . --max-warnings=0 || true
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Install zip
+        run: sudo apt-get install zip
+
+      - name: Create ZIP file
+        run: zip -r backend.zip . -x "node_modules/" ".git/" ".github/*" ".env"
+
+      - name: Deploy to Azure App Service
+        run: |
+          curl -X POST "https://pymex.scm.azurewebsites.net/api/zipdeploy" \
+          --user "${{ secrets.ZIPDEPLOY_USER }}:${{ secrets.ZIPDEPLOY_PASS }}" \
+          --data-binary @"backend.zip"
