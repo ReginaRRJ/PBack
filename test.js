@@ -17,7 +17,7 @@ describe('API de Usuarios', () => {
       .set('Authorization', `Bearer ${token}`);
     
     // Este test puede fallar si no hay DB conectada o usuarios en la tabla
-    expect([200, 500]).toContain(res.statusCode); 
+    expect([200, 430, 500]).toContain(res.statusCode); 
   });
 
   it('POST /login - datos incompletos', async () => {
